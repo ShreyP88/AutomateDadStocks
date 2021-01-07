@@ -27,9 +27,9 @@ def setup():
                 break
     print(sheetname)
     sheet = workbook[sheetname]
-    choose(sheet)
+    choose(sheet, workbook)
 
-def choose(sheet):
+def choose(sheet, workbook):
     choice = ''
     while choice != 'V' or choice != 'E' or choice != 'A': 
         choice = input("Would you like to view (V), edit (E), or add (A) a stock?  ")
@@ -38,34 +38,53 @@ def choose(sheet):
             showStock(sheet)
             break
         elif choice == 'E':
-            editStock(sheet)
+            editStock(sheet, workbook)
             break
         elif choice == 'A':
-            addStock(sheet)
+            addStock(sheet, workbook)
             break
         else:
             print("Please enter a valid option") 
     
 
 def showStock(sheet):
-    stockName = input("What is the name of the stock which you are trying to view? Example: TSLA    Stock Symbol: ")
+    stockName = input("What is the name of the stock which you are trying to view/edit? Example: TSLA    Stock Symbol: ")
     stockName = stockName.upper()
     stockRow = 0
-    for i in range(1, 6):
+    for i in range(1, sheet.max_row + 1):
         if sheet.cell(row=i, column = 2).value == stockName:
             stockRow = i
     print('\n')
     print("Here is the info for " + str(stockName) + ":")
-    for i in range(2, 13):
+    for i in range(2, sheet.max_column + 1):
         if i == 8 or i == 3 or i == 2 or i == 1:
-            print(sheet.cell(row = 1, column = i).value + ": " + str(sheet.cell(row = stockRow, column = i).value))
+            print(str((i - 1)) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(sheet.cell(row = stockRow, column = i).value))
         else:
-             print(sheet.cell(row = 1, column = i).value + ": " + str(float((sheet.cell(row = stockRow, column = i).value))))
+             print(str((i - 1)) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(float((sheet.cell(row = stockRow, column = i).value))))
+    return stockRow
 
-def editStock(sheet):
+
+def editStock(sheet, workbook):
+    print("Here is a current list of your stocks: ")
+    for i in range(2, sheet.max_row + 1):
+        print("Investment Name: " + str(sheet.cell(row = i, column = 1).value) + '\n' + "Stock Symbol: " + str(sheet.cell(row = i, column = 2).value))
+        print('\n')
+    stockRow = showStock(sheet)
+    choice = int(input("Which line would you like to edit? "))
+    print(choice)
+    if choice == 7 or choice == 2 or choice == 1:
+        print("Current: " + str(sheet.cell(row = stockRow), column = choice + 1).value)
+    else:
+        print("Current: " + str(float(sheet.cell(row = stockRow, column = choice + 1).value)))
+    edit = input("what would you like to change it to? ")
+    sheet[stockRow][choice + 1] = edit
+    print(sheet[stockRow][choice + 1]) #row = stockRow, column = choice + 1).value = edit
+    workbook.save("Stocks.xlsx")
+    
+
     return None
 
-def addStock(sheet):
+def addStock(sheet, workbook):
     return None
 
 def finished():
