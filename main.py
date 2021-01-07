@@ -10,12 +10,9 @@ import openpyxl
 import os
 
 def setup():
-    print("I RAN!")
-    #directory = input("Please enter the location of the spreadsheet. Example: ")
     directory = "C:\\Users\\shrey\\Desktop"
     directory = directory.lower()
     os.chdir(directory)
-    #spreadname = input("Please enter the name of the spreadsheet. Example: stocks.xlsx")
     spreadname = "Stocks.xlsx"
     workbook = openpyxl.load_workbook(spreadname)
     sheet_Arr = workbook.sheetnames
@@ -23,7 +20,7 @@ def setup():
     sheetname = ''
     while answer != 'Y':
         for x in sheet_Arr:
-            answer = input(x + ": Is this the sheetname which you are trying to access? (Y/N)")
+            answer = input(x + ": Is this the sheetname which you are trying to access? (Y/N)  ")
             answer = answer.upper()
             if (answer == 'Y'):
                 sheetname = sheet_Arr[0]
@@ -35,7 +32,7 @@ def setup():
 def choose(sheet):
     choice = ''
     while choice != 'V' or choice != 'E' or choice != 'A': 
-        choice = input("Would you like to view (V), edit (E), or add (A) a stock?")
+        choice = input("Would you like to view (V), edit (E), or add (A) a stock?  ")
         choice = choice.upper()
         if choice == 'V':
             showStock(sheet)
@@ -51,15 +48,13 @@ def choose(sheet):
     
 
 def showStock(sheet):
-    stockName = input("What is the name of the stock which you are trying to view? Example: TSLA")
+    stockName = input("What is the name of the stock which you are trying to view? Example: TSLA    Stock Name: ")
     stockRow = 0
-    for i in range(1, 3):
+    for i in range(1, 5):
         if sheet.cell(row=i, column = 1).value == stockName:
             stockRow = i
-    print("Here is the info for " + str(stockName))
-    for i in range(1, 10):
-        print(sheet.cell(row = stockRow, column = i).value)
-    
+    print("Here is the info for " + str(stockName) + ":")
+
 def editStock(sheet):
     return None
 
