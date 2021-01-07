@@ -54,6 +54,8 @@ def showStock(sheet):
         if sheet.cell(row=i, column = 1).value == stockName:
             stockRow = i
     print("Here is the info for " + str(stockName) + ":")
+    for i in range(1, 5):
+        print(f {sheet.cell(row = 1, column = i).value} + ": " + str(sheet.cell(row = stockRow, column = i).value))
 
 def editStock(sheet):
     return None
