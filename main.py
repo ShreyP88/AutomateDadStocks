@@ -48,25 +48,29 @@ def choose(sheet):
     
 
 def showStock(sheet):
-    stockName = input("What is the name of the stock which you are trying to view? Example: TSLA    Stock Name: ")
+    stockName = input("What is the name of the stock which you are trying to view? Example: TSLA    Stock Symbol: ")
     stockName = stockName.upper()
     stockRow = 0
-    for i in range(1, 5):
-        if sheet.cell(row=i, column = 1).value == stockName:
-            stockRow = i
-    print("Here is the info for " + str(stockName) + ":")
     for i in range(1, 6):
-        if i == 2 or i == 5:
-            print(sheet.cell(row = 1, column = i).value + ": $" + str(float((sheet.cell(row = stockRow, column = i).value))))
-        else:
+        if sheet.cell(row=i, column = 2).value == stockName:
+            stockRow = i
+    print('\n')
+    print("Here is the info for " + str(stockName) + ":")
+    for i in range(2, 13):
+        if i == 8 or i == 3 or i == 2 or i == 1:
             print(sheet.cell(row = 1, column = i).value + ": " + str(sheet.cell(row = stockRow, column = i).value))
+        else:
+             print(sheet.cell(row = 1, column = i).value + ": " + str(float((sheet.cell(row = stockRow, column = i).value))))
 
 def editStock(sheet):
     return None
 
 def addStock(sheet):
     return None
-    
+
+def finished():
+    return False
+
 def main():
     setup()
 
