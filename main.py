@@ -74,12 +74,12 @@ def editStock(sheet, workbook):
     print(choice)
     if choice == 7 or choice == 2 or choice == 1:
         print("Current: " + str(sheet.cell(row = stockRow, column = choice + 1).value))
+        edit = input("what would you like to change it to? ")
+        sheet.cell(row = stockRow, column = choice + 1).value = edit
     else:
         print("Current: " + str(float(sheet.cell(row = stockRow, column = choice + 1).value)))
-    edit = input("what would you like to change it to? ")
-    print(edit)
-    sheet.cell(row = stockRow, column = choice + 1).value = edit
-    print(sheet.cell(row = stockRow, column = choice + 1).value) 
+        edit = input("what would you like to change it to? ")
+        sheet.cell(row = stockRow, column = choice + 1).value = float(edit)
     directory = "C:\\Users\\shrey\\Desktop"
     directory = directory.lower()
     os.chdir(directory)
@@ -88,8 +88,12 @@ def editStock(sheet, workbook):
 def addStock(sheet, workbook):
     line = sheet.max_row + 1
     for i in range(1, sheet.max_column + 1):
-        add = input(sheet.cell(row = 1, column = i).value + ": ")
-        sheet.cell(row = line, column = i).value = add
+        if i == 7 or i == 2 or i == 1:
+            add = input(sheet.cell(row = 1, column = i).value + ": ")
+            sheet.cell(row = line, column = i).value = add
+        else:
+            add = input(sheet.cell(row = 1, column = i).value + ": ")
+            sheet.cell(row = line, column = i).value = float(add)
     directory = "C:\\Users\\shrey\\Desktop"
     directory = directory.lower()
     os.chdir(directory)
