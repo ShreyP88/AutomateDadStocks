@@ -15,7 +15,7 @@ def setup():
     os.chdir(directory)
     spreadname = "Stocks.xlsx"
     workbook = openpyxl.load_workbook(spreadname)
-    sheet_Arr = workbook.sheetnames
+    """ sheet_Arr = workbook.sheetnames
     answer = ''
     sheetname = ''
     while answer != 'Y':
@@ -26,8 +26,10 @@ def setup():
                 sheetname = sheet_Arr[0]
                 break
     print(sheetname)
-    sheet = workbook[sheetname]
-    choose(sheet, workbook)
+     choose(sheet, workbook) """
+    sheet = workbook["Sheet1"]
+    return sheet
+   
 
 def choose(sheet, workbook):
     choice = ''
@@ -47,21 +49,22 @@ def choose(sheet, workbook):
             print("Please enter a valid option") 
     
 
-def showStock(sheet):
-    stockName = input("What is the name of the stock which you are trying to view/edit? Example: TSLA    Stock Symbol: ")
-    stockName = stockName.upper()
+def showStock(stockName):
+    sheet = setup()
+    print(stockName)
     stockRow = 0
+    toReturn = ''
     for i in range(1, sheet.max_row + 1):
         if sheet.cell(row=i, column = 2).value == stockName:
             stockRow = i
-    print('\n')
-    print("Here is the info for " + str(stockName) + ":")
+    toReturn += '\n'
+    toReturn += "Here is the info for " + str(stockName) + ":"
     for i in range(2, sheet.max_column + 1):
         if i == 8 or i == 3 or i == 2 or i == 1:
-            print(str((i - 1)) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(sheet.cell(row = stockRow, column = i).value))
+            toReturn += str((i - 1)) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(sheet.cell(row = stockRow, column = i).value)
         else:
-             print(str((i - 1)) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(float((sheet.cell(row = stockRow, column = i).value))))
-    return stockRow
+             toReturn += str((i - 1)) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(float((sheet.cell(row = stockRow, column = i).value)))
+    return toReturn
 
 
 def editStock(sheet, workbook):
@@ -105,4 +108,5 @@ def main():
         setup()
         answer = input("Continue? (Y/N)  ")
 
-main()
+if __name__ == "__main__":
+    main()
