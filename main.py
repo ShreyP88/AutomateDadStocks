@@ -73,24 +73,32 @@ def editStock(sheet, workbook):
     choice = int(input("Which line would you like to edit? "))
     print(choice)
     if choice == 7 or choice == 2 or choice == 1:
-        print("Current: " + str(sheet.cell(row = stockRow), column = choice + 1).value)
+        print("Current: " + str(sheet.cell(row = stockRow, column = choice + 1).value))
     else:
         print("Current: " + str(float(sheet.cell(row = stockRow, column = choice + 1).value)))
     edit = input("what would you like to change it to? ")
-    sheet[stockRow][choice + 1] = edit
-    print(sheet[stockRow][choice + 1]) #row = stockRow, column = choice + 1).value = edit
+    print(edit)
+    sheet.cell(row = stockRow, column = choice + 1).value = edit
+    print(sheet.cell(row = stockRow, column = choice + 1).value) 
+    directory = "C:\\Users\\shrey\\Desktop"
+    directory = directory.lower()
+    os.chdir(directory)
     workbook.save("Stocks.xlsx")
-    
-
-    return None
 
 def addStock(sheet, workbook):
-    return None
-
-def finished():
-    return False
+    line = sheet.max_row + 1
+    for i in range(1, sheet.max_column + 1):
+        add = input(sheet.cell(row = 1, column = i).value + ": ")
+        sheet.cell(row = line, column = i).value = add
+    directory = "C:\\Users\\shrey\\Desktop"
+    directory = directory.lower()
+    os.chdir(directory)
+    workbook.save("Stocks.xlsx")
 
 def main():
-    setup()
+    answer = 'Y'
+    while answer == 'Y':
+        setup()
+        answer = input("Continue? (Y/N)  ")
 
 main()
