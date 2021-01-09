@@ -52,7 +52,6 @@ def viewClicked():
     viewFrame = Toplevel()
     viewFrame.geometry("800x500")
     viewFrame.configure(background="black")
-    #raise_frame(viewFrame)
     viewLab = tk.Label(viewFrame, text = "View Stock", width = 500, height = 5, fg = 'yellow', bg = 'black', font = ("Courier", 15))
     viewLab.pack()
     entry = tk.Entry(viewFrame, fg="white", bg = 'gray', width=50)
@@ -65,7 +64,7 @@ def viewClicked():
 def performProcessing(entry, viewFrame):
     toShow = logic.showStock(str(entry.get()[14:].strip()))
     showLabel = tk.Label(viewFrame, text = toShow, fg = 'black')
-    showLabel.place(x = 0, y = 175)
+    showLabel.place(x = 0, y = 150)
     entry.delete(14, 'end')
 
     
@@ -76,8 +75,14 @@ def addClicked():
 
 def editClicked():
     editFrame = Toplevel()
-    label = logic.editStock()
-    print(label)
+    editFrame.geometry("1200x800")
+    editFrame.configure(background="black")
+    viewLab = tk.Label(editFrame, text = "Edit Stock", width = 500, height = 5, fg = 'yellow', bg = 'black', font = ("Courier", 17))
+    viewLab.pack()
+    currentStocks = logic.showCurrentStocks()
+    currentStockLab = tk.Label(editFrame, text = currentStocks, fg = 'black')
+    currentStockLab.place(x = 0, y = 100)
+    
 
 
 
