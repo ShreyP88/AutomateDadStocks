@@ -9,6 +9,8 @@
 import openpyxl
 import os
 
+from openpyxl import workbook
+
 def setup():
     directory = "C:\\Users\\shrey\\Desktop"
     directory = directory.lower()
@@ -40,7 +42,7 @@ def choose(sheet, workbook):
             showStock(sheet)
             break
         elif choice == 'E':
-            editStock(sheet, workbook)
+            editStock()
             break
         elif choice == 'A':
             addStock(sheet, workbook)
@@ -51,28 +53,37 @@ def choose(sheet, workbook):
 
 def showStock(stockName):
     sheet = setup()
-    print(stockName)
+    #stockName = stockName.upper()
     stockRow = 0
     toReturn = ''
     for i in range(1, sheet.max_row + 1):
         if sheet.cell(row=i, column = 2).value == stockName:
             stockRow = i
     toReturn += '\n'
-    toReturn += "Here is the info for " + str(stockName) + ":"
-    for i in range(2, sheet.max_column + 1):
+    toReturn += "Here is the info for " + str(stockName) + ":" + '\n'
+    for i in range(1, sheet.max_column + 1):
         if i == 8 or i == 3 or i == 2 or i == 1:
-            toReturn += str((i - 1)) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(sheet.cell(row = stockRow, column = i).value)
+            toReturn += str(i) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(sheet.cell(row = stockRow, column = i).value)
         else:
-             toReturn += str((i - 1)) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(float((sheet.cell(row = stockRow, column = i).value)))
+             toReturn += str(i) + ": " + sheet.cell(row = 1, column = i).value + ": " + str(float((sheet.cell(row = stockRow, column = i).value)))
+        toReturn += '\n'
     return toReturn
 
-
-def editStock(sheet, workbook):
-    print("Here is a current list of your stocks: ")
+def showCurrentStocks() -> str:
+    sheet = setup()
+    toReturn = ''
+    toReturn += "Here is a current list of your stocks: " + '\n'
     for i in range(2, sheet.max_row + 1):
-        print("Investment Name: " + str(sheet.cell(row = i, column = 1).value) + '\n' + "Stock Symbol: " + str(sheet.cell(row = i, column = 2).value))
-        print('\n')
-    stockRow = showStock(sheet)
+        toReturn += "Investment Name: " + str(sheet.cell(row = i, column = 1).value) + '\n' + "Stock Symbol: " + str(sheet.cell(row = i, column = 2).value)
+        toReturn += '\n'
+    return toReturn
+
+def editStock():
+    sheet = setup()
+    toReturn =''
+    toReturn += showCurrentStocks()
+    #return toReturn
+    stockRow = showStock(stock)
     choice = int(input("Which line would you like to edit? "))
     print(choice)
     if choice == 7 or choice == 2 or choice == 1:
