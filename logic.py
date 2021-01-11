@@ -77,15 +77,18 @@ def showCurrentStocks() -> str:
         toReturn += "Investment Name: " + str(sheet.cell(row = i, column = 1).value) + '\n' + "Stock Symbol: " + str(sheet.cell(row = i, column = 2).value)
         toReturn += '\n'
     return toReturn
-
-def editStock():
+def getStockRow(stock):
+    sheet = setup()
+    stockRow = 1
+    for i in range(1, sheet.max_row + 1):
+        if sheet.cell(row=i, column = 2).value == stock:
+            stockRow = i
+    return stockRow
+def editStock(choice, stockSymbol):
     sheet = setup()
     toReturn =''
-    toReturn += showCurrentStocks()
     #return toReturn
-    stockRow = showStock(stock)
-    choice = int(input("Which line would you like to edit? "))
-    print(choice)
+    stockRow = getStockRow(stockSymbol)
     if choice == 7 or choice == 2 or choice == 1:
         print("Current: " + str(sheet.cell(row = stockRow, column = choice + 1).value))
         edit = input("what would you like to change it to? ")

@@ -67,8 +67,6 @@ def performProcessing(entry, viewFrame):
     showLabel.place(x = 0, y = 150)
     entry.delete(14, 'end')
 
-    
-    
 
 def addClicked():
     print("Add Clicked!")
@@ -82,10 +80,34 @@ def editClicked():
     currentStocks = logic.showCurrentStocks()
     currentStockLab = tk.Label(editFrame, text = currentStocks, fg = 'black')
     currentStockLab.place(x = 0, y = 100)
+    entry = tk.Entry(editFrame, fg="white", bg = 'gray', width=50)
+    entry.place(x = 250, y = 100)
+    entry.insert(0,"Stock Symbol to Edit: ")
+    submit=tk.Button(editFrame, height=1, width=5, text="Submit", command=lambda: processEdit(entry, editFrame, currentStockLab))
+    submit.place(x = 575, y = 95)
+
+def processEdit(entry, editFrame, label):
+    toShow = logic.showStock(str(entry.get()[22:].strip().upper()))
+    showLabel = tk.Label(editFrame, text = toShow, fg = 'black')
+    showLabel.place(x = 0, y = 100)
+    entry.delete(22, 'end')
+    editEntry = tk.Entry(editFrame, fg = 'white', bg = 'gray', width = 50)
+    editEntry.place(x = 250, y = 125)
+    lineNumber = -1
+    editEntry.insert(0, "Line Number to Edit: ")
+    submit1=tk.Button(editFrame, height=1, width=5, text="Submit", command = lambda: performProcessingEdit(editFrame, editEntry))
+    submit1.place(x = 575, y = 125)
+    #get the line number and the stock symbol is in toShow
+    #call logic function 
+
+def performProcessingEdit(editFrame, entry):
+    lineNum = str(entry.get()[20:].strip())
+    entry.delete(21, 'end')
+    changeEntry = tk.Entry(editFrame, fg = 'white', bg = 'gray', width = 50)
+    changeEntry.place(x = 250, y = 160)
+    changeEntry.insert(0, "New Line " + str(lineNum) + ": ")
     
-
-
-
-    
+    accept = tk.Button(editFrame, height = 1, width = 12, text = "Accept Changes")
+    accept.place(x = 575, y = 160)
 
 window.mainloop()
