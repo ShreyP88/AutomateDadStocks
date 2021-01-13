@@ -66,7 +66,7 @@ def viewClicked():
     
     
 def performProcessing(entry, viewFrame):
-    toShow = logic.showStock(str(entry.get()[14:].strip()))
+    toShow = logic.showStock(str(entry.get()[14:].strip()).upper())
     showLabel = tk.Label(viewFrame, text = toShow, fg = 'black')
     showLabel.place(x = 0, y = 150)
     entry.delete(14, 'end')
@@ -110,15 +110,19 @@ def performProcessingEdit(editFrame, entry, symbol):
     changeEntry = tk.Entry(editFrame, fg = 'white', bg = 'gray', width = 50)
     changeEntry.place(x = 250, y = 160)
     changeEntry.insert(0, "New Line " + str(lineNum) + ": ")
-    accept = tk.Button(editFrame, height = 1, width = 12, text = "Accept Changes", command = lambda: returnEdit(lineNum, symbol, changeEntry))
+    accept = tk.Button(editFrame, height = 1, width = 12, text = "Accept Changes", command = lambda: returnEdit(lineNum, symbol, changeEntry, editFrame))
     accept.place(x = 575, y = 160)
 
-def returnEdit(lineNum, symbol, changeEntry):
+def returnEdit(lineNum, symbol, changeEntry, editFrame):
     lineNum = int(lineNum)
     if lineNum == 7 or lineNum == 2 or lineNum == 1 or lineNum == 3:
         change = str(changeEntry.get()[11:].strip())
     else:
         change = float(changeEntry.get()[11:].strip())
     logic.editStock(lineNum, symbol, change)
+    edited = logic.showStock(symbol)
+    changeEntry.delete(12, 'end')
+    editedStockLabel = tk.Label(editFrame, text = edited, fg = 'black')
+    editedStockLabel.place(x = 0, y = 100)
 
 window.mainloop()
