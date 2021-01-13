@@ -1,7 +1,11 @@
 import tkinter as tk
 from tkinter import Frame, StringVar, Toplevel
-import logic 
-import time
+import logic
+import openpyxl
+import os
+
+from openpyxl import workbook
+from openpyxl import load_workbook
 
 def raise_frame(frame):
     frame.tkraise()
@@ -83,31 +87,38 @@ def editClicked():
     entry = tk.Entry(editFrame, fg="white", bg = 'gray', width=50)
     entry.place(x = 250, y = 100)
     entry.insert(0,"Stock Symbol to Edit: ")
-    submit=tk.Button(editFrame, height=1, width=5, text="Submit", command=lambda: processEdit(entry, editFrame, currentStockLab))
+    submit=tk.Button(editFrame, height=1, width=5, text="Submit", command=lambda: processEdit(entry, editFrame))
     submit.place(x = 575, y = 95)
 
-def processEdit(entry, editFrame, label):
+def processEdit(entry, editFrame):
+    symbol = str(entry.get()[22:].strip().upper())
     toShow = logic.showStock(str(entry.get()[22:].strip().upper()))
     showLabel = tk.Label(editFrame, text = toShow, fg = 'black')
     showLabel.place(x = 0, y = 100)
     entry.delete(22, 'end')
     editEntry = tk.Entry(editFrame, fg = 'white', bg = 'gray', width = 50)
     editEntry.place(x = 250, y = 125)
-    lineNumber = -1
     editEntry.insert(0, "Line Number to Edit: ")
-    submit1=tk.Button(editFrame, height=1, width=5, text="Submit", command = lambda: performProcessingEdit(editFrame, editEntry))
+    submit1=tk.Button(editFrame, height=1, width=5, text="Submit", command = lambda: performProcessingEdit(editFrame, editEntry, symbol))
     submit1.place(x = 575, y = 125)
     #get the line number and the stock symbol is in toShow
     #call logic function 
 
-def performProcessingEdit(editFrame, entry):
+def performProcessingEdit(editFrame, entry, symbol):
     lineNum = str(entry.get()[20:].strip())
     entry.delete(21, 'end')
     changeEntry = tk.Entry(editFrame, fg = 'white', bg = 'gray', width = 50)
     changeEntry.place(x = 250, y = 160)
     changeEntry.insert(0, "New Line " + str(lineNum) + ": ")
-    
-    accept = tk.Button(editFrame, height = 1, width = 12, text = "Accept Changes")
+    accept = tk.Button(editFrame, height = 1, width = 12, text = "Accept Changes", command = lambda: returnEdit(lineNum, symbol, changeEntry))
     accept.place(x = 575, y = 160)
+
+def returnEdit(lineNum, symbol, changeEntry):
+    lineNum = int(lineNum)
+    if lineNum == 7 or lineNum == 2 or lineNum == 1 or lineNum == 3:
+        change = str(changeEntry.get()[11:].strip())
+    else:
+        change = float(changeEntry.get()[11:].strip())
+    logic.editStock(lineNum, symbol, change)
 
 window.mainloop()

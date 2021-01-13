@@ -10,6 +10,7 @@ import openpyxl
 import os
 
 from openpyxl import workbook
+from openpyxl import load_workbook
 
 def setup():
     directory = "C:\\Users\\shrey\\Desktop"
@@ -33,27 +34,9 @@ def setup():
     return sheet
    
 
-def choose(sheet, workbook):
-    choice = ''
-    while choice != 'V' or choice != 'E' or choice != 'A': 
-        choice = input("Would you like to view (V), edit (E), or add (A) a stock?  ")
-        choice = choice.upper()
-        if choice == 'V':
-            showStock(sheet)
-            break
-        elif choice == 'E':
-            editStock()
-            break
-        elif choice == 'A':
-            addStock(sheet, workbook)
-            break
-        else:
-            print("Please enter a valid option") 
-    
-
 def showStock(stockName):
     sheet = setup()
-    #stockName = stockName.upper()
+    stockName = stockName.upper()
     stockRow = 0
     toReturn = ''
     for i in range(1, sheet.max_row + 1):
@@ -77,6 +60,7 @@ def showCurrentStocks() -> str:
         toReturn += "Investment Name: " + str(sheet.cell(row = i, column = 1).value) + '\n' + "Stock Symbol: " + str(sheet.cell(row = i, column = 2).value)
         toReturn += '\n'
     return toReturn
+    
 def getStockRow(stock):
     sheet = setup()
     stockRow = 1
@@ -84,22 +68,20 @@ def getStockRow(stock):
         if sheet.cell(row=i, column = 2).value == stock:
             stockRow = i
     return stockRow
-def editStock(choice, stockSymbol):
-    sheet = setup()
-    toReturn =''
-    #return toReturn
-    stockRow = getStockRow(stockSymbol)
-    if choice == 7 or choice == 2 or choice == 1:
-        print("Current: " + str(sheet.cell(row = stockRow, column = choice + 1).value))
-        edit = input("what would you like to change it to? ")
-        sheet.cell(row = stockRow, column = choice + 1).value = edit
-    else:
-        print("Current: " + str(float(sheet.cell(row = stockRow, column = choice + 1).value)))
-        edit = input("what would you like to change it to? ")
-        sheet.cell(row = stockRow, column = choice + 1).value = float(edit)
+
+def editStock(choice, stockSymbol, edit):
     directory = "C:\\Users\\shrey\\Desktop"
     directory = directory.lower()
     os.chdir(directory)
+    spreadname = "Stocks.xlsx"
+    workbook = openpyxl.load_workbook(spreadname)
+    sheet = workbook["Sheet1"]
+    stockRow = getStockRow(stockSymbol)
+
+    if choice == 7 or choice == 2 or choice == 3 or choice == 1:
+        sheet.cell(row = stockRow, column = choice).value = edit
+    else:
+        sheet.cell(row = stockRow, column = choice).value = float(edit)
     workbook.save("Stocks.xlsx")
 
 def addStock(sheet, workbook):
