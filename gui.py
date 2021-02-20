@@ -124,5 +124,5 @@ def returnEdit(lineNum, symbol, changeEntry, editFrame):
     changeEntry.delete(12, 'end')
     editedStockLabel = tk.Label(editFrame, text = edited, fg = 'black')
     editedStockLabel.place(x = 0, y = 100)
-
+print("hello")
 window.mainloop()
